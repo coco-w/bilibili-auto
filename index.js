@@ -2,6 +2,8 @@ const request = require('request-promise')
 const SESSDATA = '6a2b6aca%2C1618056446%2C27da2*a1'
 const bili_jct = 'd1ced6b38c56c37b468db3cd0d741446'
 const DedeUserID = '2940009'
+const {http} = require('./main/http') 
+const { conf } = require('./main/config')
 /**测试 */
 // request('http://passport.bilibili.com/login?act=getkey', {}, (err, res, body) => {
 //   console.log(body)
@@ -80,22 +82,24 @@ const coinOperated = async (id, num) => {
   const body = {
     aid: 245198325,
     multiply: 2,
-    csrf: 'd1ced6b38c56c37b468db3cd0d741446',
+    csrf: conf.biliJct,
     cross_domain: true,
     select_like: 0
   }
-  const option = {
-    url: 'http://api.bilibili.com/x/web-interface/coin/add',
-    method: 'POST',
-    headers: {
-      'cookie': `SESSDATA=${SESSDATA}`,
-      'Content-Type': 'application/json',
-      'Referer': 'https://www.bilibili.com/'
-    },
-    body: `aid=${245198325}&multiply=${2}&csrf=${'d1ced6b38c56c37b468db3cd0d741446'}&cross_domain=${true}`
-  }
-  const res = await request(option)
-  console.log(res)
+  const data = await http.post('http://api.bilibili.com/x/web-interface/coin/add', body)
+  console.log(data)
+  // const option = {
+  //   url: 'http://api.bilibili.com/x/web-interface/coin/add',
+  //   method: 'POST',
+  //   headers: {
+  //     'cookie': `SESSDATA=${SESSDATA}`,
+  //     'Content-Type': 'application/json',
+  //     'Referer': 'https://www.bilibili.com/'
+  //   },
+  //   body: `aid=${245198325}&multiply=${2}&csrf=${'d1ced6b38c56c37b468db3cd0d741446'}&cross_domain=${true}`
+  // }
+  // const res = await request(option)
+  // console.log(res)
 }
 const main = async () => {
   // const num = await getIconNum()
@@ -112,6 +116,8 @@ const main = async () => {
   //     console.log(`id为(${ele.aid})的视频已经投币了`)
   //   }
   // })
+  // const a = http()
+  
   await coinOperated()
 }
 
