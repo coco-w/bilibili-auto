@@ -80,7 +80,7 @@ const videoIsIcon = async (id) => {
 }
 const coinOperated = async (id, num) => {
   const body = {
-    aid: 245198325,
+    bvid: 'BV1tp4y1672d',
     multiply: 2,
     csrf: conf.biliJct,
     cross_domain: true,
