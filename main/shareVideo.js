@@ -1,27 +1,28 @@
-const { VIDEO_HEART_BEAT, GET_HOT_VIDEO } = require('./interface')
+const { SHARE_VIDEO, GET_HOT_VIDEO } = require('./interface')
+const { conf } = require('./config')
 const { http } = require('./http')
 /**
  * 播放一个视频
  * @param {string} bvid 
  * @returns {boolean} 播放是否成功
  */
-const play = async (bvid) => {
-  const time = Math.floor(Math.random()*10) + 90
+const share = async (bvid) => {
   const data = {
     bvid: bvid,
-    played_time: time
+    csrf: conf.biliJct
   }
-  const res = await http.post(VIDEO_HEART_BEAT, data)
+  const res = await http.post(SHARE_VIDEO, data)
   if (res.code === 0) {
-    console.log(`播放bvid为${bvid}的成功`)
+    console.log(`分享bvid为${bvid}的成功`)
     return true
   }else {
-    console.log(`播放bvid为${bvid}的失败`)
+    console.log(`分享bvid为${bvid}的失败`)
+    console.log(`分享失败原因${res.message}`)
     return false
   }
 }
 
-const playHotVideo = async () => {
+const shareHotVideo = async () => {
   const params = {
     day: 3,
     rid: 36,
@@ -32,7 +33,7 @@ const playHotVideo = async () => {
     let state = false
     let count = 0 
     while(!state) {
-      state = await play(videos[count].bvid)
+      state = await share(videos[count].bvid)
       count ++
     }
   } catch (error) {
@@ -40,4 +41,4 @@ const playHotVideo = async () => {
   }
 }
 
-exports.playVideo = playHotVideo
+exports.shareVideo = shareHotVideo

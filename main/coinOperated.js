@@ -1,6 +1,6 @@
 const { http } = require('./http') 
 const { conf } = require('./config')
-const { searchVideo, videoIsCoin, coinNum, coinAdd } = require('./interface')
+const { SEARCH_VIDEO, VIDEO_IS_COIN, COIN_NUM, COIN_ADD } = require('./interface')
 
 /**
  * 获取用户投币历史
@@ -9,7 +9,7 @@ const getCoinNum = async () => {
   let num = 0
   let todayCoin = 0
   try {
-    const body = await http.get(coinNum)
+    const body = await http.get(COIN_NUM)
     if (body.code === -101) {
       console.log('账号未登录')
       return -1
@@ -52,7 +52,7 @@ const getVideos = async () => {
     keyword: 'dota2',
     order: 'pubdate',
   }
-  const res = await http.get(searchVideo, params)
+  const res = await http.get(SEARCH_VIDEO, params)
   return res.data.result
 }
 /**
@@ -61,7 +61,7 @@ const getVideos = async () => {
  * @returns {boolean} true没有投币false投币过
  */
 const getVideoIsCoin = async (id) => {
-  const res = await http.get(videoIsCoin, {bvid: id})
+  const res = await http.get(VIDEO_IS_COIN, {bvid: id})
   console.log(res)
   return res.data.multiply === 0
 }
@@ -79,7 +79,7 @@ const coinOperated = async (id, num) => {
     cross_domain: true,
     select_like: 0
   }
-  const data = await http.post(coinAdd, body)
+  const data = await http.post(COIN_ADD, body)
   if (data.code === 0) {
     return true
   }else {
